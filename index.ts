@@ -1,28 +1,37 @@
-import express, { Application, Request, Response } from "express";
+import express, { Application, Request, Response, NextFunction } from "express";
 import LoginRoutes from "./src/routes/LoginRoutes";
 require('dotenv')
 
 
 class App {
     public app: Application;
-    
+
+
     constructor(){
         this.app = express();
         this.routes();
-       
+        
     }
 
     protected routes(): void {
         this.app.use(express.json())
         this.app.use(express.urlencoded({extended: false}))
-        
-        this.app.route("/tes").get((req: Request, res: Response)=>{
-            res.send("Tes Halo")
+        const BASE_API = process.env.BASE_API +''
+       
+       
+         
+        //Validation Cannot find Endpoin
+        this.app.use('*', (req: Request, res: Response, next:NextFunction) => {
+            return res.status(404).json({
+                status_code:404,
+                message: 'endpoint not found'
+            })
         })
 
-        this.app.use('/api/v1',LoginRoutes)
 
 
+         // Routes
+         this.app.use(BASE_API,LoginRoutes)
     }
 
 
