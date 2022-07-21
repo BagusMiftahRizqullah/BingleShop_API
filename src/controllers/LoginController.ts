@@ -2,6 +2,7 @@ import { Request, Response} from "express";
 const tb_users = require("../models").tb_users
 const tb_logins = require("../models").tb_logins
 import Auth from "../utils/Auth"
+import CheckToken from "../utils/CheckToken"
 
 
 
@@ -10,11 +11,15 @@ class LoginController {
 
     signin =  async (req: Request, res: Response): Promise <Response> =>{
         let {user_name, password } = req.body
-        
+       
+       
+        //Cek Tokens 
+        // const cekBearer = await CheckToken.HeaderCheck(req, res)
+       
         const user = await tb_users.findOne({
             where: { user_name}
         })
-        console.log("userss", user)
+        // console.log("userssreq", req)
         
         const DataRes = {
             id: user.id,
