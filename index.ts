@@ -1,7 +1,9 @@
 import express, { Application, Request, Response, NextFunction } from "express";
-import LoginRoutes from "./src/routes/LoginRoutes";
 require('dotenv')
 
+//Routes
+import LoginRoutes from "./src/routes/LoginRoutes";
+import UsersRoutes from "./src/routes/UsersRoutes";
 
 class App {
     public app: Application;
@@ -20,6 +22,7 @@ class App {
        
         // Routes
         this.app.use(BASE_API,LoginRoutes)
+        this.app.use(BASE_API,UsersRoutes)
          
 
 

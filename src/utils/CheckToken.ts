@@ -13,8 +13,8 @@ class CheckToken {
         let cekHeader =  headers.authorization?.split(" ") || ""
         
         if(!cekHeader[1]){
-            return res.status(402).json({
-                status_code:402,
+            return res.status(403).json({
+                status_code:403,
                 message: 'No Auth token available'
             })
         } else {
@@ -23,8 +23,8 @@ class CheckToken {
             })
 
             if(!tokens){
-                return res.status(402).json({
-                    status_code:402,
+                return res.status(403).json({
+                    status_code:403,
                     message: 'No Auth token available'
                 })
             } else {

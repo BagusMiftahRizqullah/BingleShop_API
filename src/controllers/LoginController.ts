@@ -8,11 +8,9 @@ import CheckToken from "../utils/CheckToken"
 
 class LoginController {
    
-
     signin =  async (req: Request, res: Response): Promise <Response> =>{
         let {user_name, password } = req.body
-       
-       
+
         //Cek Tokens 
         // const cekBearer = await CheckToken.HeaderCheck(req, res)
        
@@ -27,15 +25,32 @@ class LoginController {
             no_telephone: user.no_telephone
         }
 
-
+        // Compare password in DB and user send
         let compares = await Auth.ComparePws(password, user.password)
         if(compares){
             let newToken = Auth.generateToken(user.id, user.user_name, user.password)
             
-             await  tb_logins.create({
-                id_users: user.id,
-                access_token: newToken
+            const cekUserLogin = await tb_logins.findOne({
+                where: { id_users : user.id }
             })
+
+            // if user have login
+            if(cekUserLogin){
+                await tb_logins.update(
+                    {
+                      access_token: newToken,
+                    },
+                    {
+                        where: { id_users : user.id },
+                    });
+            } else {
+
+                await  tb_logins.create({
+                   id_users: user.id,
+                   access_token: newToken
+               })
+            }
+
             
             return res.send({
                 status_code: 200,
@@ -75,8 +90,7 @@ class LoginController {
 
             //Hassing PWS
             const HasingPWS: string = await Auth.hash(password)
-            console.log("HasingPWS", HasingPWS);
-            console.log("test 2");
+           
             //Insert To Database tb_users
             const createUser = await  tb_users.create({
                 name,
@@ -85,8 +99,7 @@ class LoginController {
                 user_name,
                 password: HasingPWS,
             })
-            console.log("test 3");
-            console.log("createUser123", createUser);
+          
 
             return res.send(createUser);
 
@@ -97,23 +110,7 @@ class LoginController {
         })
     }
     }
-    
-    
-    
-    
-    // index(req: Request, res: Response): Response {
-        
-    //     return res.send("ini adalah index");
-    // }
-    // show(req: Request, res: Response): Response {
-    //     return res.send("ini adalah create")
-    // }
-    // update(req: Request, res: Response): Response {
-    //     return res.send("ini adalah update")
-    // }
-    // delete(req: Request, res: Response): Response {
-    //     return res.send("ini adalah delete")
-    // }
+
 
 }
 
