@@ -2,6 +2,7 @@ module.exports =(sequelize, DataTypes) =>{
     const tb_users = sequelize.define('tb_users',{
         
         id: {
+            autoIncrement: true,
             primaryKey: true,
             type: DataTypes.INTEGER,
             allowNull:false,
@@ -12,27 +13,22 @@ module.exports =(sequelize, DataTypes) =>{
         name: {
             type: DataTypes.STRING,
             allowNull:false,
-            validate:{
-                notEmpty: true
-            }
+            
         },
         no_telephone: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull:false,
-            validate:{
-                notEmpty: true
-            }
+           
         },
         alamat: {
             type: DataTypes.STRING,
             allowNull:false,
-            validate:{
-                notEmpty: true
-            }
+            
         },
         user_name: {
             type: DataTypes.STRING,
             allowNull:false,
+            unique: true,
             validate:{
                 notEmpty: true
             }
@@ -40,12 +36,13 @@ module.exports =(sequelize, DataTypes) =>{
         password: {
             type: DataTypes.STRING,
             allowNull:false,
+            unique: true,
             validate:{
                 notEmpty: true
             }
         },
        
-    });
+    }, );
 
     return tb_users
 }

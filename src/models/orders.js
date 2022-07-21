@@ -2,6 +2,7 @@ module.exports =(sequelize, DataTypes) =>{
     const tb_orders = sequelize.define('tb_orders',{
         
         id: {
+            autoIncrement: true,
             primaryKey: true,
             type: DataTypes.INTEGER,
             allowNull:false,

@@ -2,6 +2,7 @@ module.exports =(sequelize, DataTypes) =>{
     const tb_payments = sequelize.define('tb_payment',{
         
         id: {
+            autoIncrement: true,
             primaryKey: true,
             type: DataTypes.INTEGER,
             allowNull:false,

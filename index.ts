@@ -18,8 +18,13 @@ class App {
         this.app.use(express.urlencoded({extended: false}))
         const BASE_API = process.env.BASE_API +''
        
-       
+        // Routes
+        this.app.use(BASE_API,LoginRoutes)
          
+
+
+
+
         //Validation Cannot find Endpoin
         this.app.use('*', (req: Request, res: Response, next:NextFunction) => {
             return res.status(404).json({
@@ -27,11 +32,7 @@ class App {
                 message: 'endpoint not found'
             })
         })
-
-
-
-         // Routes
-         this.app.use(BASE_API,LoginRoutes)
+    
     }
 
 
