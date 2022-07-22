@@ -4,6 +4,7 @@ require('dotenv')
 //Routes
 import LoginRoutes from "./src/routes/LoginRoutes";
 import UsersRoutes from "./src/routes/UsersRoutes";
+import ItemsRoutes from "./src/routes/ItemsRoutes";
 
 class App {
     public app: Application;
@@ -23,7 +24,7 @@ class App {
         // Routes
         this.app.use(BASE_API,LoginRoutes)
         this.app.use(BASE_API,UsersRoutes)
-         
+        this.app.use(BASE_API,ItemsRoutes)
 
 
 

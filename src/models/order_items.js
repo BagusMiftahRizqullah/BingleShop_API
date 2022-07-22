@@ -24,14 +24,14 @@ module.exports =(sequelize, DataTypes) =>{
                 notEmpty: true
             }
         },
-        alamat: {
-            type: DataTypes.STRING,
+        item_quantity: {
+            type: DataTypes.INTEGER,
             allowNull:false,
             validate:{
                 notEmpty: true
             }
         },
-        order_quantity: {
+        item_price: {
             type: DataTypes.INTEGER,
             allowNull:false,
             validate:{

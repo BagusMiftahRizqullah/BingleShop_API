@@ -1,6 +1,5 @@
 require('dotenv');
 import { Router, Request, Response, } from "express";
-import { sequelize } from "../models";
 import RouterI from "./RouterInterface";
 //Controllers
 import UsersController from "../controllers/UsersController";

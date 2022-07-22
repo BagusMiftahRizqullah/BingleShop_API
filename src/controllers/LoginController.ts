@@ -101,7 +101,19 @@ class LoginController {
             })
           
 
-            return res.send(createUser);
+            if(!createUser){
+                return res.status(402).json({
+                    status_code:402,
+                    message: 'Data user gagal ditambahkan'
+                })
+            }
+           else{
+            return res.status(200).json({
+                status_code:200,
+                message: 'Data Berhasil ditambahkan',
+                data: createUser
+            })
+           }
 
     } catch{
         return res.status(500).json({

@@ -1,34 +1,35 @@
 import { Request, Response} from "express";
-const tb_users = require("../models").tb_users
-const tb_logins = require("../models").tb_logins
+const tb_order_items = require("../models").tb_order_items
 import CheckToken from "../utils/CheckToken"
 
 
 
-class UsersController {
+class OrderItemsController {
    
-    getUser= async (req: Request, res: Response): Promise <Response> => {
+    getOrderItems= async (req: Request, res: Response): Promise <Response> => {
         try {
              // cek Have Token ?
         await CheckToken.HeaderCheck(req, res)
 
-        const users = await tb_users.findAll();
+        const OrderItems = await tb_order_items.findAll();
 
         let DataRes : Array<T> =[]
 
-        const NewData : void = users?.map((v, i)=>{
+        const NewData : void = tb_order_items?.map((v, i)=>{
             DataRes.push({
                 id: v.id,
-                name: v.name,
-                no_telephone: v.no_telephone,
-                alamat: v.alamat
+                id_item: v.id_item,
+                item_name: v.item_name,
+                item_quantity: v.item_quantity,
+                item_price: v.item_price,
+                item_status: v.item_status
             })
         })
 
-        if(!users){
+        if(!OrderItems){
             return res.status(402).json({
                 status_code:402,
-                message: 'Data users tidak ada'
+                message: 'Data item tidak ada'
             })
         } else {
             return res.status(200).json({
@@ -49,36 +50,37 @@ class UsersController {
 
     }
     
-    getUserById= async (req: Request, res: Response): Promise <Response> => {
+    getItemsById= async (req: Request, res: Response): Promise <Response> => {
         try {
             const {params} = req
             // cek Have Token ?
             await CheckToken.HeaderCheck(req, res)
     
-            const user = await tb_users.findOne({
+            const items = await tb_items.findOne({
                 where: { id: params?.id}
             })
-            // const HasingPWS: string = await Auth.hash(password)
             
             
     
-            if(!user){
+            if(!items){
                 return res.status(402).json({
                     status_code:402,
-                    message: 'Data users tidak ada'
+                    message: 'Data item tidak ada'
                 })
             } else {
     
-                if(user.length >1){
+                if(items.length >1){
     
                     let DataRes : Array<T> =[]
     
-                    const NewData : void = user?.map((v, i)=>{
+                    const NewData : void = items?.map((v, i)=>{
                         DataRes.push({
                             id: v.id,
-                            name: v.name,
-                            no_telephone: v.no_telephone,
-                            alamat: v.alamat
+                            item_name: v.item_name,
+                            item_category: v.item_category,
+                            item_quantity: v.item_quantity,
+                            item_price: v.item_price,
+                            item_status: v.item_status
                         })
                     })
                     return res.status(200).json({
@@ -92,10 +94,12 @@ class UsersController {
                     status_code:200,
                     message: 'Data Berhasil diambil',
                     data: [{
-                        id: user.id,
-                        name: user.name,
-                        no_telephone: user.no_telephone,
-                        alamat: user.alamat
+                            id: items.id,
+                            item_name: items.item_name,
+                            item_category: items.item_category,
+                            item_quantity: items.item_quantity,
+                            item_price: items.item_price,
+                            item_status: items.item_status
                     }]
                 })
     
@@ -116,7 +120,54 @@ class UsersController {
 
     }
     
-    updateUser= async (req: Request, res: Response): Promise <Response> => {
+    postItems= async (req : Request, res: Response): Promise <Response> =>{
+        try {
+            let {
+                item_name, 
+                item_category, 
+                item_quantity, 
+                item_price,
+                item_status
+            } = req.body
+
+                // cek Have Token ?
+            await CheckToken.HeaderCheck(req, res)
+
+            const createItems = await  tb_items.create({
+                item_name, 
+                item_category, 
+                item_quantity, 
+                item_price,
+                item_status
+            })
+
+            if(!createItems){
+                return res.status(402).json({
+                    status_code:402,
+                    message: 'Data item gagal ditambahkan'
+                })
+            }
+           else{
+            return res.status(200).json({
+                status_code:200,
+                message: 'Data Berhasil ditambahkan',
+                data: createItems
+            })
+           }
+
+        }
+
+        catch{
+            return res.status(500).json({
+                status_code:500,
+                message: 'Server error',
+                
+            })
+        }
+    }
+
+
+    updateItem= async (req: Request, res: Response): Promise <Response> => {
         try {
 
             const {id} = req.body
@@ -124,16 +175,16 @@ class UsersController {
             // cek Have Token ?
             await CheckToken.HeaderCheck(req, res)
     
-            const userUpdate =  await tb_users.update(
+            const itemUpdate =  await tb_items.update(
                 req.body,
                 {
                     where: { id : id },
                 });
-                
-            if (userUpdate[0] == 0){
+                console.log("itemUpdate", itemUpdate)
+            if (itemUpdate[0] == 0){
                 return res.status(402).json({
                     status_code:402,
-                    message: 'Data users tidak ada'
+                    message: 'Data item tidak ada'
                 })
             } else {
     
@@ -154,7 +205,7 @@ class UsersController {
         }
     }
 
-    deleteUser= async (req: Request, res: Response): Promise <Response> => {
+    deleteItem= async (req: Request, res: Response): Promise <Response> => {
         try {
 
             const {params} = req
@@ -162,16 +213,16 @@ class UsersController {
             // cek Have Token ?
             await CheckToken.HeaderCheck(req, res)
     
-            const userDelete = await tb_users.destroy({
+            const itemDelete = await tb_items.destroy({
                 where: {
                   id: params?.id
                 }
               });
                 
-            if (!userDelete){
+            if (!itemDelete){
                 return res.status(402).json({
                     status_code:402,
-                    message: 'Data users tidak ada'
+                    message: 'Data item tidak ada'
                 })
             } else {
     
@@ -196,4 +247,4 @@ class UsersController {
 }
 
 
-export default new UsersController();
+export default new OrderItemsController();
