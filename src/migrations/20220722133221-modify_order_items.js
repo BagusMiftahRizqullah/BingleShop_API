@@ -6,35 +6,35 @@ module.exports = {
       id: {
         autoIncrement: true,
         primaryKey: true,
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull:false,
         validate:{
             notEmpty: true
         }
     },
     id_item: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull:false,
         validate:{
             notEmpty: true
         }
     },
      item_name: {
-        type: DataTypes.STRING,
+        type: Sequelize.STRING,
         allowNull:false,
         validate:{
             notEmpty: true
         }
     },
     item_quantity: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull:false,
         validate:{
             notEmpty: true
         }
     },
     item_price: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull:false,
         validate:{
             notEmpty: true

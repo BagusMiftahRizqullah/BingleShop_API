@@ -10,62 +10,81 @@ class LoginController {
    
     signin =  async (req: Request, res: Response): Promise <Response> =>{
         let {user_name, password } = req.body
-
-        //Cek Tokens 
+    try {
+          //Cek Tokens 
         // const cekBearer = await CheckToken.HeaderCheck(req, res)
        
         const user = await tb_users.findOne({
             where: { user_name}
         })
-        // console.log("userssreq", req)
-        
-        const DataRes = {
-            id: user.id,
-            name: user.name,
-            no_telephone: user.no_telephone
-        }
-
-        // Compare password in DB and user send
-        let compares = await Auth.ComparePws(password, user.password)
-        if(compares){
-            let newToken = Auth.generateToken(user.id, user.user_name, user.password)
-            
-            const cekUserLogin = await tb_logins.findOne({
-                where: { id_users : user.id }
-            })
-
-            // if user have login
-            if(cekUserLogin){
-                await tb_logins.update(
-                    {
-                      access_token: newToken,
-                    },
-                    {
-                        where: { id_users : user.id },
-                    });
-            } else {
-
-                await  tb_logins.create({
-                   id_users: user.id,
-                   access_token: newToken
-               })
-            }
-
-            
-            return res.send({
-                status_code: 200,
-                message: 'login successfully',
-                data: DataRes,
-                token: newToken,
-            })
-
-
-        } else {
+        console.log("userssreq", user)
+        if(!user){
             return res.status(402).json({
                 status_code:402,
-                message: 'Username atau password anda salah'
+                message: 'Data users tidak ada'
             })
+        } else {
+            const DataRes = {
+                id: user.id,
+                name: user.name,
+                no_telephone: user.no_telephone
+            }
+    
+            // Compare password in DB and user send
+            let compares = await Auth.ComparePws(password, user.password)
+            if(compares){
+                let newToken = Auth.generateToken(user.id, user.user_name, user.password)
+                
+                const cekUserLogin = await tb_logins.findOne({
+                    where: { id_users : user.id }
+                })
+    
+                // if user have login
+                if(cekUserLogin){
+                    await tb_logins.update(
+                        {
+                          access_token: newToken,
+                        },
+                        {
+                            where: { id_users : user.id },
+                        });
+                } else {
+    
+                    await  tb_logins.create({
+                       id_users: user.id,
+                       access_token: newToken
+                   })
+                }
+    
+                
+                return res.send({
+                    status_code: 200,
+                    message: 'login successfully',
+                    data: DataRes,
+                    token: newToken,
+                })
+    
+    
+            } else {
+                return res.status(402).json({
+                    status_code:402,
+                    message: 'Username atau password anda salah'
+                })
+            }
+
+
         }
+
+
+    } 
+    catch{
+        return res.status(500).json({
+            status_code:500,
+            message: 'Server error',
+            
+        })
+    }
+      
         
     }
 

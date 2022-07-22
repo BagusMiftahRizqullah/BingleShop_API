@@ -22,7 +22,6 @@ class OrderItemsController {
                 item_name: v.item_name,
                 item_quantity: v.item_quantity,
                 item_price: v.item_price,
-                item_status: v.item_status
             })
         })
 
