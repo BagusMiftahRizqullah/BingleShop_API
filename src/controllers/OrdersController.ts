@@ -14,17 +14,17 @@ class OrderController {
 
         const Order = await tb_orders.findAll();
 
-        
+       
         if(Order == 0 ){
             return res.status(402).json({
                 status_code:402,
                 message: 'Data order tidak ada'
             })
         } else {
-
+           
             let DataRes : Array<T> =[]
 
-            const NewData : void = tb_orders?.map((v, i)=>{
+            const NewData : void = Order?.map((v, i)=>{
                 DataRes.push({
                     id: v.id,
                     id_customer: v.id_customer,
@@ -37,7 +37,7 @@ class OrderController {
                     order_status: v.order_status
                 })
             })
-    
+            
             if(!Order){
                 return res.status(402).json({
                     status_code:402,
@@ -171,7 +171,7 @@ class OrderController {
                {
                     id_customer: id_customer,
                     id_order_items: id_order_itemsToString,
-                    id_promo: id_promo == null ? 0 : 0,
+                    id_promo: id_promo == null ? 0 : id_promo,
                     no_invoice: no_invoice.includes(",")? no_invoice.replace(',',''): no_invoice,
                     customer_name: customer_name,
                     date_order: date_order,
@@ -216,13 +216,39 @@ class OrderController {
     updateOrder= async (req: Request, res: Response): Promise <Response> => {
         try {
 
-            const {id} = req.body
+            const {
+                id, 
+                id_customer, 
+                id_order_items, 
+                id_promo,
+                no_invoice,
+                customer_name,
+                date_order,
+                total_price,
+                order_status,
+            } = req.body
 
             // cek Have Token ?
             await CheckToken.HeaderCheck(req, res)
     
+
+
+            const id_order_itemsToString : void = await id_order_items.toString()
+            const Bodys =
+               {
+                    id_customer: id_customer,
+                    id_order_items: id_order_itemsToString,
+                    id_promo: id_promo == null ? 0 : id_promo,
+                    no_invoice: no_invoice.includes(",")? no_invoice.replace(',',''): no_invoice,
+                    customer_name: customer_name,
+                    date_order: date_order,
+                    total_price: total_price,
+                    order_status: order_status
+            }
+
+            console.log("bodyss", Bodys )
             const OrderUpdate =  await tb_orders.update(
-                req.body,
+                Bodys,
                 {
                     where: { id : id },
                 });
