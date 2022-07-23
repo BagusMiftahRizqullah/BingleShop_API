@@ -13,11 +13,11 @@ import OrderItemsController from "../controllers/OrderItemsController";
     }
 
     public routes(): void {
-        this.router.get("/orderitems", OrderItemsController.getItems)
-        this.router.get("/orderitems/:id", OrderItemsController.getItemsById)
-        this.router.post("/orderitems", OrderItemsController.postItems)
-        this.router.put("/orderitems", OrderItemsController.updateItem)
-        this.router.delete("/orderitems/:id", OrderItemsController.deleteItem)
+        this.router.get("/orderitems", OrderItemsController.getOrderItems)
+        this.router.get("/orderitems/:id", OrderItemsController.getOrderItemsById)
+        this.router.post("/orderitems", OrderItemsController.postOrderItems)
+        this.router.put("/orderitems", OrderItemsController.updateOrderItems)
+        this.router.delete("/orderitems/:id", OrderItemsController.deleteOrderItems)
 
     }
  }

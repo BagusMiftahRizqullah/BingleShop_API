@@ -5,6 +5,9 @@ require('dotenv')
 import LoginRoutes from "./src/routes/LoginRoutes";
 import UsersRoutes from "./src/routes/UsersRoutes";
 import ItemsRoutes from "./src/routes/ItemsRoutes";
+import OrderItemRouters from "./src/routes/OrderItemRouters";
+import OrderRoutes from "./src/routes/OrderRoutes";
+
 
 class App {
     public app: Application;
@@ -25,8 +28,8 @@ class App {
         this.app.use(BASE_API,LoginRoutes)
         this.app.use(BASE_API,UsersRoutes)
         this.app.use(BASE_API,ItemsRoutes)
-
-
+        this.app.use(BASE_API,OrderItemRouters)
+        this.app.use(BASE_API,OrderRoutes)
 
 
         //Validation Cannot find Endpoin

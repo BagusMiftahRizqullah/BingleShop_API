@@ -10,6 +10,13 @@ module.exports =(sequelize, DataTypes) =>{
                 notEmpty: true
             }
         },
+        id_user: {
+            type: DataTypes.INTEGER,
+            allowNull:false,
+            validate:{
+                notEmpty: true
+            }
+          },
         id_item: {
             type: DataTypes.INTEGER,
             allowNull:false,

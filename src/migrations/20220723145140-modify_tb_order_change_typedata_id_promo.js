@@ -2,7 +2,7 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('tb_order_items', {
+    return queryInterface.createTable('tb_order', {
       id: {
         autoIncrement: true,
         primaryKey: true,
@@ -12,46 +12,74 @@ module.exports = {
             notEmpty: true
         }
     },
-    id_item: {
+
+    id_customer: {
         type: Sequelize.INTEGER,
         allowNull:false,
         validate:{
             notEmpty: true
         }
     },
-     item_name: {
+
+    id_order_items: {
+        type: Sequelize.STRING,
+        allowNull:false,
+        validate:{
+            notEmpty: false
+        }
+    },
+
+    id_promo: {
+        type: Sequelize.INTEGER,
+        allowNull:false,
+        validate:{
+            notEmpty: false
+        }
+    },
+
+    no_invoice: {
         type: Sequelize.STRING,
         allowNull:false,
         validate:{
             notEmpty: true
         }
     },
-    item_quantity: {
+
+    customer_name: {
+        type: Sequelize.STRING,
+        allowNull:false,
+        validate:{
+            notEmpty: true
+        }
+    },
+
+    date_order: {
+        type: Sequelize.DATE,
+        allowNull:false,
+        validate:{
+            notEmpty: true
+        }
+    },
+
+    total_price: {
         type: Sequelize.INTEGER,
         allowNull:false,
         validate:{
             notEmpty: true
         }
     },
-    item_price: {
-        type: Sequelize.INTEGER,
+
+    order_status: {
+        type: Sequelize.BOOLEAN,
         allowNull:false,
         validate:{
-            notEmpty: true
+            notEmpty: false
         }
     },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
     });
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('tb_order_items');
+    return queryInterface.dropTable('tb_order');
   }
 };

@@ -20,10 +20,10 @@ module.exports =(sequelize, DataTypes) =>{
         },
 
         id_order_items: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull:false,
             validate:{
-                notEmpty: true
+                notEmpty: false
             }
         },
 
@@ -31,12 +31,12 @@ module.exports =(sequelize, DataTypes) =>{
             type: DataTypes.INTEGER,
             allowNull:false,
             validate:{
-                notEmpty: true
+                notEmpty: false
             }
         },
 
         no_invoice: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull:false,
             validate:{
                 notEmpty: true
@@ -71,7 +71,7 @@ module.exports =(sequelize, DataTypes) =>{
             type: DataTypes.BOOLEAN,
             allowNull:false,
             validate:{
-                notEmpty: true
+                notEmpty: false
             }
         },
        

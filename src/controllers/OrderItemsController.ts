@@ -13,30 +13,41 @@ class OrderItemsController {
 
         const OrderItems = await tb_order_items.findAll();
 
-        let DataRes : Array<T> =[]
-
-        const NewData : void = tb_order_items?.map((v, i)=>{
-            DataRes.push({
-                id: v.id,
-                id_item: v.id_item,
-                item_name: v.item_name,
-                item_quantity: v.item_quantity,
-                item_price: v.item_price,
-            })
-        })
-
-        if(!OrderItems){
+        console.log("OrderItems dsadsadsa",OrderItems)
+        if(OrderItems == 0 ){
             return res.status(402).json({
                 status_code:402,
                 message: 'Data item tidak ada'
             })
         } else {
-            return res.status(200).json({
-                status_code:200,
-                message: 'Data Berhasil diambil',
-                data: DataRes
+
+            let DataRes : Array<T> =[]
+
+            const NewData : void = OrderItems?.map((v, i)=>{
+                DataRes.push({
+                    id: v.id,
+                    id_user:v.id_user,
+                    id_item: v.id_item,
+                    item_name: v.item_name,
+                    item_quantity: v.item_quantity,
+                    item_price: v.item_price,
+                })
             })
+    
+            if(!OrderItems){
+                return res.status(402).json({
+                    status_code:402,
+                    message: 'Data item tidak ada'
+                })
+            } else {
+                return res.status(200).json({
+                    status_code:200,
+                    message: 'Data Berhasil diambil',
+                    data: DataRes
+                })
+            }
         }
+        
         } catch{
             return res.status(500).json({
                 status_code:500,
@@ -49,37 +60,37 @@ class OrderItemsController {
 
     }
     
-    getItemsById= async (req: Request, res: Response): Promise <Response> => {
+    getOrderItemsById= async (req: Request, res: Response): Promise <Response> => {
         try {
             const {params} = req
             // cek Have Token ?
             await CheckToken.HeaderCheck(req, res)
     
-            const items = await tb_items.findOne({
+            const OrderItems = await tb_order_items.findOne({
                 where: { id: params?.id}
             })
             
             
     
-            if(!items){
+            if(!OrderItems){
                 return res.status(402).json({
                     status_code:402,
-                    message: 'Data item tidak ada'
+                    message: 'Data Order Items tidak ada'
                 })
             } else {
     
-                if(items.length >1){
+                if(OrderItems.length >1){
     
                     let DataRes : Array<T> =[]
     
-                    const NewData : void = items?.map((v, i)=>{
+                    const NewData : void = OrderItems?.map((v, i)=>{
                         DataRes.push({
                             id: v.id,
+                            id_user: v.id_user,
+                            id_item: v.id_item,
                             item_name: v.item_name,
-                            item_category: v.item_category,
                             item_quantity: v.item_quantity,
                             item_price: v.item_price,
-                            item_status: v.item_status
                         })
                     })
                     return res.status(200).json({
@@ -93,12 +104,12 @@ class OrderItemsController {
                     status_code:200,
                     message: 'Data Berhasil diambil',
                     data: [{
-                            id: items.id,
-                            item_name: items.item_name,
-                            item_category: items.item_category,
-                            item_quantity: items.item_quantity,
-                            item_price: items.item_price,
-                            item_status: items.item_status
+                            id: OrderItems.id,
+                            id_user: OrderItems.id_user,
+                            id_item: OrderItems.id_item,
+                            item_name: OrderItems.item_name,
+                            item_quantity: OrderItems.item_quantity,
+                            item_price: OrderItems.item_price,
                     }]
                 })
     
@@ -115,42 +126,40 @@ class OrderItemsController {
             })
         }
        
-
-
     }
     
-    postItems= async (req : Request, res: Response): Promise <Response> =>{
+    postOrderItems= async (req : Request, res: Response): Promise <Response> =>{
         try {
             let {
-                item_name, 
-                item_category, 
-                item_quantity, 
+                id_item,
+                id_user,
+                item_name,
+                item_quantity,
                 item_price,
-                item_status
             } = req.body
 
                 // cek Have Token ?
             await CheckToken.HeaderCheck(req, res)
 
-            const createItems = await  tb_items.create({
-                item_name, 
-                item_category, 
-                item_quantity, 
-                item_price,
-                item_status
+            const createOrderItems = await  tb_order_items.create({
+                id_user,
+                id_item,
+                item_name,
+                item_quantity,
+                item_price: parseInt(item_price) * parseInt(item_quantity),
             })
 
-            if(!createItems){
+            if(!createOrderItems){
                 return res.status(402).json({
                     status_code:402,
-                    message: 'Data item gagal ditambahkan'
+                    message: 'Data Order Items gagal ditambahkan'
                 })
             }
            else{
             return res.status(200).json({
                 status_code:200,
                 message: 'Data Berhasil ditambahkan',
-                data: createItems
+                data: createOrderItems
             })
            }
 
@@ -166,7 +175,7 @@ class OrderItemsController {
     }
 
 
-    updateItem= async (req: Request, res: Response): Promise <Response> => {
+    updateOrderItems= async (req: Request, res: Response): Promise <Response> => {
         try {
 
             const {id} = req.body
@@ -174,16 +183,16 @@ class OrderItemsController {
             // cek Have Token ?
             await CheckToken.HeaderCheck(req, res)
     
-            const itemUpdate =  await tb_items.update(
+            const OrderItemsUpdate =  await tb_order_items.update(
                 req.body,
                 {
                     where: { id : id },
                 });
-                console.log("itemUpdate", itemUpdate)
-            if (itemUpdate[0] == 0){
+                
+            if (OrderItemsUpdate[0] == 0){
                 return res.status(402).json({
                     status_code:402,
-                    message: 'Data item tidak ada'
+                    message: 'Data Order Items tidak ada'
                 })
             } else {
     
@@ -204,7 +213,7 @@ class OrderItemsController {
         }
     }
 
-    deleteItem= async (req: Request, res: Response): Promise <Response> => {
+    deleteOrderItems= async (req: Request, res: Response): Promise <Response> => {
         try {
 
             const {params} = req
@@ -212,16 +221,16 @@ class OrderItemsController {
             // cek Have Token ?
             await CheckToken.HeaderCheck(req, res)
     
-            const itemDelete = await tb_items.destroy({
+            const OrderItemsDelete = await tb_order_items.destroy({
                 where: {
                   id: params?.id
                 }
               });
                 
-            if (!itemDelete){
+            if (!OrderItemsDelete){
                 return res.status(402).json({
                     status_code:402,
-                    message: 'Data item tidak ada'
+                    message: 'Data Order Items tidak ada'
                 })
             } else {
     
