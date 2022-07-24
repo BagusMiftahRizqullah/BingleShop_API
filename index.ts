@@ -7,7 +7,7 @@ import UsersRoutes from "./src/routes/UsersRoutes";
 import ItemsRoutes from "./src/routes/ItemsRoutes";
 import OrderItemRouters from "./src/routes/OrderItemRouters";
 import OrderRoutes from "./src/routes/OrderRoutes";
-
+import PromoRoutes from "./src/routes/PromoRoutes";
 
 class App {
     public app: Application;
@@ -30,7 +30,7 @@ class App {
         this.app.use(BASE_API,ItemsRoutes)
         this.app.use(BASE_API,OrderItemRouters)
         this.app.use(BASE_API,OrderRoutes)
-
+        this.app.use(BASE_API,PromoRoutes)
 
         //Validation Cannot find Endpoin
         this.app.use('*', (req: Request, res: Response, next:NextFunction) => {

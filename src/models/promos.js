@@ -1,5 +1,5 @@
 module.exports =(sequelize, DataTypes) =>{
-    const tb_promos = sequelize.define('tb_promo',{
+    const tb_promos = sequelize.define('tb_promos',{
         
         id: {
             autoIncrement: true,
