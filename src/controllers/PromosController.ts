@@ -1,7 +1,6 @@
 import { Request, Response} from "express";
-const tb_promos = require("../models").tb_promos
 import CheckToken from "../utils/CheckToken"
-
+const {tb_promos} = require("../models")
 
 
 class PromosController {

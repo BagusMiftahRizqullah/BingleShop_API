@@ -1,8 +1,8 @@
 import { Request, Response} from "express";
-const tb_orders = require("../models").tb_orders
-const tb_order_items = require("../models").tb_order_items
+// const tb_orders = require("../models").tb_orders
+// const tb_order_items = require("../models").tb_order_items
 import CheckToken from "../utils/CheckToken"
-
+const {orders, tb_order_items} = require('../models')
 
 
 class OrderController {
@@ -12,10 +12,9 @@ class OrderController {
              // cek Have Token ?
         await CheckToken.HeaderCheck(req, res)
 
-        const Order = await tb_orders.findAll();
-
-       
-        if(Order == 0 ){
+        const Order = await orders.findAll();
+        console.log("ordersssss123", Order)
+        if(Order == 0){
             return res.status(402).json({
                 status_code:402,
                 message: 'Data order tidak ada'
@@ -70,7 +69,7 @@ class OrderController {
             // cek Have Token ?
             await CheckToken.HeaderCheck(req, res)
     
-            const Order = await tb_orders.findOne({
+            const Order = await orders.findOne({
                 where: { id: params?.id}
             })
             
@@ -128,10 +127,10 @@ class OrderController {
             }
         } 
 
-        catch{
+        catch(err){
             return res.status(500).json({
                 status_code:500,
-                message: 'Server error',
+                message: err || 'Server error',
                 
             })
         }
@@ -143,8 +142,7 @@ class OrderController {
     postOrder= async (req : Request, res: Response): Promise <Response> =>{
         try {
             let {
-                id_customer,
-                id_order_items,
+                id_user,
                 id_promo,
                 date_order,
                 customer_name
@@ -153,25 +151,26 @@ class OrderController {
                 // cek Have Token ?
             await CheckToken.HeaderCheck(req, res)
 
-            const no_invoice : string =`INV-${Math.floor(Math.random() * 99999)}${id_customer}${id_order_items}`
+            const no_invoice : string =`INV-${Math.floor(Math.random() * 99999)}${id_user}`
 
             const OrderItems = await tb_order_items.findAll({
-                where: { id_user: id_customer}
+                where: { id_user: id_user}
             })
 
+            console.log("start1",OrderItems)
             const toString : string = await JSON.stringify(OrderItems)
             const toJSON = await JSON.parse(toString);
-            // await console.log("OrderItems123321", toJSON)
+            console.log("OrderItems123321", toJSON)
 
             const total_price : void = await
             toJSON.reduce((a,b)=> a.item_price + b.item_price);
 
-            const id_order_itemsToString : void = await id_order_items.toString()
+            // const id_order_itemsToString : void = await id_order_items.toString()
+
+
             const Bodys =
                {
-                    id_customer: id_customer,
-                    id_order_items: id_order_itemsToString,
-                    id_promo: id_promo == null ? 0 : id_promo,
+                    id_user: id_user,
                     no_invoice: no_invoice.includes(",")? no_invoice.replace(',',''): no_invoice,
                     customer_name: customer_name,
                     date_order: date_order,
@@ -179,12 +178,14 @@ class OrderController {
                     order_status: false
             }
 
-            console.log("BODYSS",Bodys)
-            console.log("Goo createOrders")
+         
+
+            // console.log("BODYSS",Bodys)
+            // console.log("Goo createOrders")
            
-                const createOrder = await  tb_orders.create(Bodys)
+                const createOrder = await orders.create(Bodys)
     
-                console.log("createOrders",createOrder )
+                // console.log("createOrders",createOrder )
                 if(!createOrder){
                     return res.status(402).json({
                         status_code:402,
@@ -203,10 +204,10 @@ class OrderController {
 
         }
 
-        catch{
+        catch(err){
             return res.status(500).json({
                 status_code:500,
-                message: 'Server error',
+                message: err || 'Server error',
                 
             })
         }
@@ -218,9 +219,7 @@ class OrderController {
 
             const {
                 id, 
-                id_customer, 
-                id_order_items, 
-                id_promo,
+                id_user, 
                 no_invoice,
                 customer_name,
                 date_order,
@@ -233,12 +232,10 @@ class OrderController {
     
 
 
-            const id_order_itemsToString : void = await id_order_items.toString()
+          
             const Bodys =
                {
-                    id_customer: id_customer,
-                    id_order_items: id_order_itemsToString,
-                    id_promo: id_promo == null ? 0 : id_promo,
+                    id_customer: id_user,
                     no_invoice: no_invoice.includes(",")? no_invoice.replace(',',''): no_invoice,
                     customer_name: customer_name,
                     date_order: date_order,
@@ -247,7 +244,7 @@ class OrderController {
             }
 
             console.log("bodyss", Bodys )
-            const OrderUpdate =  await tb_orders.update(
+            const OrderUpdate =  await orders.update(
                 Bodys,
                 {
                     where: { id : id },
@@ -285,7 +282,7 @@ class OrderController {
             // cek Have Token ?
             await CheckToken.HeaderCheck(req, res)
     
-            const OrderDelete = await tb_orders.destroy({
+            const OrderDelete = await orders.destroy({
                 where: {
                   id: params?.id
                 }

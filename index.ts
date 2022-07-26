@@ -8,6 +8,7 @@ import ItemsRoutes from "./src/routes/ItemsRoutes";
 import OrderItemRouters from "./src/routes/OrderItemRouters";
 import OrderRoutes from "./src/routes/OrderRoutes";
 import PromoRoutes from "./src/routes/PromoRoutes";
+import Payment_Routes from "./src/routes/Payment_Routes";
 
 class App {
     public app: Application;
@@ -31,7 +32,9 @@ class App {
         this.app.use(BASE_API,OrderItemRouters)
         this.app.use(BASE_API,OrderRoutes)
         this.app.use(BASE_API,PromoRoutes)
+        this.app.use(BASE_API,Payment_Routes)
 
+        
         //Validation Cannot find Endpoin
         this.app.use('*', (req: Request, res: Response, next:NextFunction) => {
             return res.status(404).json({
@@ -39,6 +42,7 @@ class App {
                 message: 'endpoint not found'
             })
         })
+        
     
     }
 
@@ -51,12 +55,12 @@ const db = require('./src/models')
 const port = process.env.PORT || 8000
 const app = new App().app;
 
-
-db.sequelize.sync().then((req: Request)=>{
-    app.listen(port, ()=>{
-        console.log(`Server Running on Port ${port}`)
-    })
+app.listen(port, ()=>{
+    console.log(`Server Running on Port ${port}`)
 })
+
+// db.sequelize.sync().then((req: Request)=>{
+// })
 
 // function group(arg0: string, arg1: (router: Application) => void) {
 //     throw new Error("Function not implemented.");

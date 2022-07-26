@@ -1,51 +1,60 @@
-module.exports =(sequelize, DataTypes) =>{
-    const tb_items = sequelize.define('tb_items',{
-        
-        id: {
-            autoIncrement: true,
-            primaryKey: true,
-            type: DataTypes.INTEGER,
-            allowNull:false,
-            validate:{
-                notEmpty: true
-            }
-        },
-         item_name: {
-            type: DataTypes.STRING,
-            allowNull:false,
-            validate:{
-                notEmpty: true
-            }
-        },
-        item_category: {
-            type: DataTypes.STRING,
-            allowNull:false,
-            validate:{
-                notEmpty: true
-            }
-        },
-        item_price: {
-            type: DataTypes.INTEGER,
-            allowNull:false,
-            validate:{
-                notEmpty: true
-            }
-        },
-        item_quantity: {
-            type: DataTypes.INTEGER,
-            allowNull:false,
-            validate:{
-                notEmpty: true
-            }
-        },
-        item_status: {
-            type: DataTypes.BOOLEAN,
-            allowNull:false,
-            validate:{
-                notEmpty: true
-            }
-        },
-    });
+const Sequelize = require('sequelize')
+const sequelize = require('./sequelize')
 
-    return tb_items
-}
+class items extends Sequelize.Model {}
+
+items.init({
+    id: {
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
+        allowNull:false,
+        validate:{
+            notEmpty: true
+        }
+    },
+     item_name: {
+        type: Sequelize.STRING,
+        allowNull:false,
+        validate:{
+            notEmpty: true
+        }
+    },
+    item_category: {
+        type: Sequelize.STRING,
+        allowNull:false,
+        validate:{
+            notEmpty: true
+        }
+    },
+    item_price: {
+        type: Sequelize.INTEGER,
+        allowNull:false,
+        validate:{
+            notEmpty: true
+        }
+    },
+    item_quantity: {
+        type: Sequelize.INTEGER,
+        allowNull:false,
+        validate:{
+            notEmpty: true
+        }
+    },
+    item_status: {
+        type: Sequelize.BOOLEAN,
+        allowNull:false,
+        validate:{
+            notEmpty: true
+        }
+    }
+}, {
+    sequelize: sequelize,
+    timestamps: true,
+    underscored: true,
+    paranoid: true,
+    freezeTableName: true,
+    tableName: 'items'
+})
+
+module.exports = items

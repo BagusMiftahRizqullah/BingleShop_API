@@ -1,6 +1,14 @@
 require('dotenv').config()
 
 module.exports = {
+        username: "postgres",
+        password: "root",
+        database: "db_bingleshop_v1",
+        host: "localhost",
+        dialect: "postgres",
+
+
+        
   // "development": {
   //       "username": process.env.DB_USER,
   //       "password": process.env.DB_PASSWORD,
@@ -9,11 +17,11 @@ module.exports = {
   //       "dialect": process.env.DB_USER,
   //     }
 
-    "development": {
-        "username": "postgres",
-        "password": "root",
-        "database": "db_bingleshop_v1",
-        "host": "localhost",
-        "dialect": "postgres",
-      }
+    // "development": {
+    //     "username": "postgres",
+    //     "password": "root",
+    //     "database": "db_bingleshop_v1",
+    //     "host": "localhost",
+    //     "dialect": "postgres",
+    //   }
 }

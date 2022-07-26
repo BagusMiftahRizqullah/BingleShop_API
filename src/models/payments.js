@@ -1,46 +1,60 @@
-module.exports =(sequelize, DataTypes) =>{
-    const tb_payments = sequelize.define('tb_payment',{
-        
-        id: {
-            autoIncrement: true,
-            primaryKey: true,
-            type: DataTypes.INTEGER,
-            allowNull:false,
-            validate:{
-                notEmpty: true
-            }
-        },
-         
-        id_orders: {
-            type: DataTypes.INTEGER,
-            allowNull:false,
-            validate:{
-                notEmpty: true
-            }
-        },
-        payment_date: {
-            type: DataTypes.DATE,
-            allowNull:false,
-            validate:{
-                notEmpty: true
-            }
-        },
-        payment_type: {
-            type: DataTypes.STRING,
-            allowNull:false,
-            validate:{
-                notEmpty: true
-            }
-        },
-        amount: {
-            type: DataTypes.INTEGER,
-            allowNull:false,
-            validate:{
-                notEmpty: true
-            }
-        },
-       
-    });
+const Sequelize = require('sequelize')
+const sequelize = require('./sequelize')
 
-    return tb_payments
-}
+class tb_payments extends Sequelize.Model {}
+
+tb_payments.init({
+    id: {
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
+        allowNull:false,
+        validate:{
+            notEmpty: true
+        }
+    },
+     
+    id_orders: {
+        type: Sequelize.INTEGER,
+        allowNull:false,
+        validate:{
+            notEmpty: true
+        },
+        references: {
+          model: 'orders',
+          key: 'id'
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
+    },
+    payment_date: {
+        type: Sequelize.DATE,
+        allowNull:false,
+        validate:{
+            notEmpty: true
+        }
+    },
+    payment_type: {
+        type: Sequelize.STRING,
+        allowNull:false,
+        validate:{
+            notEmpty: true
+        }
+    },
+    amount: {
+        type: Sequelize.INTEGER,
+        allowNull:false,
+        validate:{
+            notEmpty: true
+        }
+    },
+}, {
+    sequelize: sequelize,
+    timestamps: true,
+    underscored: true,
+    paranoid: true,
+    freezeTableName: true,
+    tableName: 'tb_payments'
+})
+
+module.exports = items

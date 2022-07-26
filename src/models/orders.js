@@ -1,81 +1,93 @@
-module.exports =(sequelize, DataTypes) =>{
-    const tb_orders = sequelize.define('tb_orders',{
-        
-        id: {
-            autoIncrement: true,
-            primaryKey: true,
-            type: DataTypes.INTEGER,
-            allowNull:false,
-            validate:{
-                notEmpty: true
-            }
-        },
+const Sequelize = require('sequelize')
+const sequelize = require('./sequelize')
 
-        id_customer: {
-            type: DataTypes.INTEGER,
-            allowNull:false,
-            validate:{
-                notEmpty: true
-            }
-        },
+class orders extends Sequelize.Model {}
 
-        id_order_items: {
-            type: DataTypes.STRING,
-            allowNull:false,
-            validate:{
-                notEmpty: false
-            }
-        },
+orders.init({
+    id: {
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
+        allowNull:false,
+        validate:{
+            notEmpty: true
+        }
+    },
 
-        id_promo: {
-            type: DataTypes.INTEGER,
-            allowNull:false,
-            validate:{
-                notEmpty: false
-            }
+    id_user: {
+        type: Sequelize.INTEGER,
+        allowNull:false,
+        validate:{
+            notEmpty: true
         },
+        references: {
+          model: 'users',
+          key: 'id'
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE'
+    },
 
-        no_invoice: {
-            type: DataTypes.STRING,
-            allowNull:false,
-            validate:{
-                notEmpty: true
-            }
-        },
+    id_promo: {
+        type: Sequelize.INTEGER,
+        // allowNull:true,
+        // validate:{
+        //     notEmpty: false
+        // },
+    //     references: {
+    //       model: 'tb_promos',
+    //       key: 'id'
+    //   },
+    //   onUpdate: 'CASCADE',
+    //   onDelete: 'CASCADE'
+    },
 
-        customer_name: {
-            type: DataTypes.STRING,
-            allowNull:false,
-            validate:{
-                notEmpty: true
-            }
-        },
+    no_invoice: {
+        type: Sequelize.STRING,
+        allowNull:false,
+        validate:{
+            notEmpty: true
+        }
+    },
 
-        date_order: {
-            type: DataTypes.DATE,
-            allowNull:false,
-            validate:{
-                notEmpty: true
-            }
-        },
+    customer_name: {
+        type: Sequelize.STRING,
+        allowNull:false,
+        validate:{
+            notEmpty: true
+        }
+    },
 
-        total_price: {
-            type: DataTypes.INTEGER,
-            allowNull:false,
-            validate:{
-                notEmpty: true
-            }
-        },
+    date_order: {
+        type: Sequelize.DATE,
+        allowNull:false,
+        validate:{
+            notEmpty: true
+        }
+    },
 
-        order_status: {
-            type: DataTypes.BOOLEAN,
-            allowNull:false,
-            validate:{
-                notEmpty: false
-            }
-        },
-       
-    });
+    total_price: {
+        type: Sequelize.INTEGER,
+        allowNull:false,
+        validate:{
+            notEmpty: true
+        }
+    },
 
-    return tb_orders
-}
+    order_status: {
+        type: Sequelize.BOOLEAN,
+        allowNull:false,
+        validate:{
+            notEmpty: false
+        }
+    },
+}, {
+    sequelize: sequelize,
+    timestamps: true,
+    underscored: true,
+    paranoid: true,
+    freezeTableName: true,
+    tableName: 'orders'
+})
+
+module.exports = orders

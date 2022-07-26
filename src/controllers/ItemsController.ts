@@ -1,7 +1,6 @@
 import { Request, Response} from "express";
-const tb_items = require("../models").tb_items
 import CheckToken from "../utils/CheckToken"
-
+const {items} = require('../models')
 
 
 class ItemsController {
@@ -11,11 +10,11 @@ class ItemsController {
              // cek Have Token ?
         await CheckToken.HeaderCheck(req, res)
 
-        const items = await tb_items.findAll();
+        const item = await items.findAll();
 
         let DataRes : Array<T> =[]
 
-        const NewData : void = items?.map((v, i)=>{
+        const NewData : void = item?.map((v, i)=>{
             DataRes.push({
                 id: v.id,
                 item_name: v.item_name,
@@ -26,7 +25,7 @@ class ItemsController {
             })
         })
 
-        if(!items){
+        if(!item){
             return res.status(402).json({
                 status_code:402,
                 message: 'Data item tidak ada'
@@ -56,20 +55,20 @@ class ItemsController {
             // cek Have Token ?
             await CheckToken.HeaderCheck(req, res)
     
-            const items = await tb_items.findOne({
+            const item = await items.findOne({
                 where: { id: params?.id}
             })
             
             
     
-            if(!items){
+            if(!item){
                 return res.status(402).json({
                     status_code:402,
                     message: 'Data item tidak ada'
                 })
             } else {
     
-                if(items.length >1){
+                if(item.length >1){
     
                     let DataRes : Array<T> =[]
     
@@ -94,12 +93,12 @@ class ItemsController {
                     status_code:200,
                     message: 'Data Berhasil diambil',
                     data: [{
-                            id: items.id,
-                            item_name: items.item_name,
-                            item_category: items.item_category,
-                            item_quantity: items.item_quantity,
-                            item_price: items.item_price,
-                            item_status: items.item_status
+                            id: item.id,
+                            item_name: item.item_name,
+                            item_category: item.item_category,
+                            item_quantity: item.item_quantity,
+                            item_price: item.item_price,
+                            item_status: item.item_status
                     }]
                 })
     
@@ -133,7 +132,7 @@ class ItemsController {
                 // cek Have Token ?
             await CheckToken.HeaderCheck(req, res)
 
-            const createItems = await  tb_items.create({
+            const createItems = await  items.create({
                 item_name, 
                 item_category, 
                 item_quantity, 
@@ -175,7 +174,7 @@ class ItemsController {
             // cek Have Token ?
             await CheckToken.HeaderCheck(req, res)
     
-            const itemUpdate =  await tb_items.update(
+            const itemUpdate =  await items.update(
                 req.body,
                 {
                     where: { id : id },
@@ -213,7 +212,7 @@ class ItemsController {
             // cek Have Token ?
             await CheckToken.HeaderCheck(req, res)
     
-            const itemDelete = await tb_items.destroy({
+            const itemDelete = await items.destroy({
                 where: {
                   id: params?.id
                 }

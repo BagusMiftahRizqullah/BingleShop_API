@@ -1,7 +1,6 @@
 import { Request, Response} from "express";
-const tb_order_items = require("../models").tb_order_items
 import CheckToken from "../utils/CheckToken"
-
+const {tb_order_items} = require('../models')
 
 
 class OrderItemsController {
@@ -48,10 +47,10 @@ class OrderItemsController {
             }
         }
         
-        } catch{
+        } catch(err){
             return res.status(500).json({
                 status_code:500,
-                message: 'Server error',
+                message: err || 'Server error',
                 
             })
         }
@@ -142,8 +141,8 @@ class OrderItemsController {
             await CheckToken.HeaderCheck(req, res)
 
             const createOrderItems = await  tb_order_items.create({
-                id_user,
                 id_item,
+                id_user,
                 item_name,
                 item_quantity,
                 item_price: parseInt(item_price) * parseInt(item_quantity),
@@ -165,10 +164,10 @@ class OrderItemsController {
 
         }
 
-        catch{
+        catch(err){
             return res.status(500).json({
                 status_code:500,
-                message: 'Server error',
+                message: err ||  'Server error',
                 
             })
         }

@@ -1,8 +1,8 @@
 import { Request, Response} from "express";
-const tb_users = require("../models").tb_users
-const tb_logins = require("../models").tb_logins
+// const tb_users = require("../models").tb_users
+// const tb_logins = require("../models").tb_logins
 import CheckToken from "../utils/CheckToken"
-
+const {users, tb_logins} = require('../models')
 
 
 class UsersController {
@@ -12,11 +12,11 @@ class UsersController {
              // cek Have Token ?
         await CheckToken.HeaderCheck(req, res)
 
-        const users = await tb_users.findAll();
+        const user = await users.findAll();
 
         let DataRes : Array<T> =[]
 
-        const NewData : void = users?.map((v, i)=>{
+        const NewData : void = user?.map((v, i)=>{
             DataRes.push({
                 id: v.id,
                 name: v.name,
@@ -25,7 +25,7 @@ class UsersController {
             })
         })
 
-        if(!users){
+        if(!user){
             return res.status(402).json({
                 status_code:402,
                 message: 'Data users tidak ada'
@@ -55,7 +55,7 @@ class UsersController {
             // cek Have Token ?
             await CheckToken.HeaderCheck(req, res)
     
-            const user = await tb_users.findOne({
+            const user = await users.findOne({
                 where: { id: params?.id}
             })
             // const HasingPWS: string = await Auth.hash(password)
@@ -124,7 +124,7 @@ class UsersController {
             // cek Have Token ?
             await CheckToken.HeaderCheck(req, res)
     
-            const userUpdate =  await tb_users.update(
+            const userUpdate =  await users.update(
                 req.body,
                 {
                     where: { id : id },
@@ -162,7 +162,7 @@ class UsersController {
             // cek Have Token ?
             await CheckToken.HeaderCheck(req, res)
     
-            const userDelete = await tb_users.destroy({
+            const userDelete = await users.destroy({
                 where: {
                   id: params?.id
                 }

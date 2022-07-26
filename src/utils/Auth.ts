@@ -13,10 +13,10 @@ class Auth {
     }
 
     public static generateToken = (id: number ,username: string, password: string): string=>{
-        
+        console.log("tokensss111")
         const private_key: string = process.env.PRIVATE_KEY || "BEJ03"
-        const token: string = jwt.sign({id, username, password}, private_key);
-
+        const token: string = jwt.sign({id, username, password}, private_key, { expiresIn: "120ms" });
+        console.log("tokensss", token)
         return token
     }
 

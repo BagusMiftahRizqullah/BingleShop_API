@@ -1,38 +1,51 @@
-'use strict';
+// const Roles = require('./roles')
+// const Users = require('./users')
+const sequelize = require('./sequelize')
+const tb_logins = require('./logins')
+const users = require('./users')
+const tb_order_items = require('./order_items')
+const items = require('./items')
+const orders = require('./orders')
+const tb_promos = require('./promos')
 
-const fs = require('fs');
-const path = require('path');
-const Sequelize = require('sequelize');
-const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '../../config/config.js')[env];
-console.log("configgg", config)
-const db = {};
+users.hasMany(tb_logins, {
+  as: 'tb_login',
+  foreignKey: 'id_users',
+})
 
-let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
-}
-
-fs
-  .readdirSync(__dirname)
-  .filter(file => {
-    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
+users.hasMany(tb_order_items, {
+    as: 'tb_order_items',
+    foreignKey: 'id_user',
   })
-  .forEach(file => {
-    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-    db[model.name] = model;
-  });
 
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
+  items.hasMany(tb_order_items, {
+    as: 'tb_order_items',
+    foreignKey: 'id_item',
+  })
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+  // orderRelation
+  users.hasMany(orders, {
+    as: 'orders',
+    foreignKey: 'id_user',
+  })
 
-module.exports = db;
+  // tb_promos.hasMany(orders, {
+  //   as: 'orders',
+  //   foreignKey: 'id_promo',
+  // })
+
+// tb_order_items.belongsTo(users, {
+//   as: 'users',
+//   foreignKey: 'id_users',
+// })
+
+module.exports = {
+  sequelize,
+  tb_logins,
+  users,
+  tb_order_items,
+  items,
+  orders,
+  tb_promos
+ 
+}
