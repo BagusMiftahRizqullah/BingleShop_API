@@ -107,8 +107,19 @@ class LoginController {
                     message: 'Invalid request'
                 })
         }
-        console.log("test 1",req.body);
 
+
+        const cekUsername = await users.findOne({
+            where: { user_name : user_name}
+        })
+
+        if(cekUsername){
+            return res.status(402).json({
+                status_code:402,
+                message: 'Username already exist'
+            })
+        }
+        
             //Hassing PWS
             const HasingPWS: string = await Auth.hash(password)
             console.log("test 2",HasingPWS);
