@@ -1,10 +1,7 @@
 import { Request, Response} from "express";
-const tb_payments = require("../models").tb_payments
-const tb_orders = require("../models").tb_orders
-const tb_order_items = require("../models").tb_order_items
-const tb_items = require("../models").tb_items
 import CheckToken from "../utils/CheckToken"
 import UpdateStock from "../utils/UpdateStock"
+const {tb_payments, orders} = require('../models')
 
 
 class PaymentController {
@@ -142,7 +139,7 @@ class PaymentController {
 
           
 
-            const dataOrder = await tb_orders.findOne({
+            const dataOrder = await orders.findOne({
                 where: { id: id_orders}
             })
             console.log("dataOrder", dataOrder)
@@ -152,8 +149,7 @@ class PaymentController {
             const calculate = parseInt(amount) - parseInt(dataOrder.total_price)
             console.log("calculatess", calculate)
 
-                // update stock
-                await UpdateStock.Update(req, res)
+               
 
                 
             if(calculate < 0){
@@ -162,55 +158,40 @@ class PaymentController {
                     message: 'Transaksi Gagal, Jumlah yang anda masukan kurang dari total price'
                 })
             } else if(calculate > 0){
-                // console.log("masuk calculates", dataOrder)
-                // let id_itemss = await dataOrder?.id_order_items?.split(',')
-                // console.log("arryy", id_itemss )
-          
-                // const newStock = await dataOrderItems?.item_quantity
+                 // // update stock
+                await UpdateStock.Update(req, res)
+                console.log("selesai update items")
+    
 
+                const OrderUpdate =  await orders.update(
+                    {
+                        order_status: true
+                    },
+                    {
+                        where: { id : id_orders },
+                    });
 
+              
+                    if(!OrderUpdate || OrderUpdate == 0){
+                        return res.status(402).json({
+                            status_code:402,
+                            message: 'Transaksi Gagal'
+                        })
+                    }
+                   else{
+                    const createPayment = await  tb_payments.create({
+                        id_orders,
+                        payment_date,
+                        payment_type,
+                        amount
+                    })
 
-                // const OrderUpdate =  await tb_orders.update(
-                //     {
-                //         order_status: true
-                //     },
-                //     {
-                //         where: { id : id_orders },
-                //     });
-
-                // const StockUpdate =  await tb_items.update(
-                //     {
-                //         item_quantity: id_itemss
-                //     },
-                //     {
-                //         where: { id : id_itemss },
-                //     });
-                //     console.log("StockUpdate", StockUpdate)
-                //     if(!OrderUpdate){
-                //         return res.status(402).json({
-                //             status_code:402,
-                //             message: 'Transaksi Gagal'
-                //         })
-                //     }
-                //    else{
-                //     const createPayment = await  tb_payments.create({
-                //         id_orders,
-                //         payment_date,
-                //         payment_type,
-                //         amount
-                //     })
-
-                //     return res.status(200).json({
-                //         status_code:200,
-                //         message: 'Pembayaran Berhasil dibuat, sisa dari pembayaran tidak akan dikembalikan',
-                //         data: createPayment
-                //     })
-                //    }
-                return res.status(500).json({
-                    status_code:500,
-                    message: 'Server error',
-                    
-                })
+                    return res.status(200).json({
+                        status_code:200,
+                        message: 'Pembayaran Berhasil dibuat, sisa dari pembayaran tidak akan dikembalikan',
+                        data: createPayment
+                    })
+                   }
             } else {
                 return res.status(500).json({
                     status_code:500,

@@ -7,6 +7,9 @@ const tb_order_items = require('./order_items')
 const items = require('./items')
 const orders = require('./orders')
 const tb_promos = require('./promos')
+const tb_payments = require('./payments')
+
+
 
 users.hasMany(tb_logins, {
   as: 'tb_login',
@@ -46,6 +49,6 @@ module.exports = {
   tb_order_items,
   items,
   orders,
-  tb_promos
- 
+  tb_promos,
+  tb_payments,
 }

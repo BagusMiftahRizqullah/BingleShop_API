@@ -57,4 +57,4 @@ tb_payments.init({
     tableName: 'tb_payments'
 })
 
-module.exports = items
+module.exports = tb_payments
