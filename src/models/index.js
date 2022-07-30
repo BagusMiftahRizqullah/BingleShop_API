@@ -53,7 +53,7 @@ tb_order_items.belongsTo(users, {
     foreignKey: 'id_user',
   })
 
-  orders.belongsTo(users, {
+  orders.belongsTo (users, {
     as: 'users',
     foreignKey: 'id',
   })

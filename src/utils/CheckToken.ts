@@ -9,7 +9,7 @@ class CheckToken {
     
     public static HeaderCheck = async (req: Request, res: Response ) =>{
         const {headers} = req
-       
+       console.log("headers", headers)
         let cekHeader =  headers.authorization?.split(" ") || ""
         console.log("cekHeader", cekHeader)
         if(!cekHeader[1]){
