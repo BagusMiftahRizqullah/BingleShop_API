@@ -7,9 +7,7 @@ class ItemsController {
    
     getItems= async (req: Request, res: Response): Promise <Response> => {
         try {
-             // cek Have Token ?
-        await CheckToken.HeaderCheck(req, res)
-
+      
         const item = await items.findAll();
 
         let DataRes : Array<T> =[]
@@ -52,8 +50,7 @@ class ItemsController {
     getItemsById= async (req: Request, res: Response): Promise <Response> => {
         try {
             const {params} = req
-            // cek Have Token ?
-            await CheckToken.HeaderCheck(req, res)
+         
     
             const item = await items.findOne({
                 where: { id: params?.id}
@@ -129,8 +126,7 @@ class ItemsController {
                 item_status
             } = req.body
 
-                // cek Have Token ?
-            await CheckToken.HeaderCheck(req, res)
+           
 
             const createItems = await  items.create({
                 item_name, 
@@ -171,8 +167,7 @@ class ItemsController {
 
             const {id} = req.body
 
-            // cek Have Token ?
-            await CheckToken.HeaderCheck(req, res)
+         
     
             const itemUpdate =  await items.update(
                 req.body,
@@ -209,8 +204,6 @@ class ItemsController {
 
             const {params} = req
 
-            // cek Have Token ?
-            await CheckToken.HeaderCheck(req, res)
     
             const itemDelete = await items.destroy({
                 where: {

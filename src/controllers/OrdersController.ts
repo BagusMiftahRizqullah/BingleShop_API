@@ -9,8 +9,7 @@ class OrderController {
    
     getOrder= async (req: Request, res: Response): Promise <Response> => {
         try {
-             // cek Have Token ?
-        await CheckToken.HeaderCheck(req, res)
+      
 
         const Order = await orders.findAll();
         console.log("ordersssss123", Order)
@@ -66,8 +65,7 @@ class OrderController {
     getOrderById= async (req: Request, res: Response): Promise <Response> => {
         try {
             const {params} = req
-            // cek Have Token ?
-            await CheckToken.HeaderCheck(req, res)
+         
     
             const Order = await orders.findOne({
                 where: { id: params?.id}
@@ -148,8 +146,7 @@ class OrderController {
                 customer_name
             } = req.body
 
-                // cek Have Token ?
-            await CheckToken.HeaderCheck(req, res)
+        
 
             const no_invoice : string =`INV-${Math.floor(Math.random() * 99999)}${id_user}`
 
@@ -227,11 +224,6 @@ class OrderController {
                 order_status,
             } = req.body
 
-            // cek Have Token ?
-            await CheckToken.HeaderCheck(req, res)
-    
-
-
           
             const Bodys =
                {
@@ -279,8 +271,6 @@ class OrderController {
 
             const {params} = req
 
-            // cek Have Token ?
-            await CheckToken.HeaderCheck(req, res)
     
             const OrderDelete = await orders.destroy({
                 where: {

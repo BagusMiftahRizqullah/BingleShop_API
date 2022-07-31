@@ -7,8 +7,7 @@ class OrderItemsController {
    
     getOrderItems= async (req: Request, res: Response): Promise <Response> => {
         try {
-             // cek Have Token ?
-        await CheckToken.HeaderCheck(req, res)
+    
 
         const OrderItems = await tb_order_items.findAll();
 
@@ -62,8 +61,7 @@ class OrderItemsController {
     getOrderItemsById= async (req: Request, res: Response): Promise <Response> => {
         try {
             const {params} = req
-            // cek Have Token ?
-            await CheckToken.HeaderCheck(req, res)
+          
     
             const OrderItems = await tb_order_items.findOne({
                 where: { id: params?.id}
@@ -137,8 +135,7 @@ class OrderItemsController {
                 item_price,
             } = req.body
 
-                // cek Have Token ?
-            await CheckToken.HeaderCheck(req, res)
+         
 
             const createOrderItems = await  tb_order_items.create({
                 id_item,
@@ -179,8 +176,7 @@ class OrderItemsController {
 
             const {id} = req.body
 
-            // cek Have Token ?
-            await CheckToken.HeaderCheck(req, res)
+          
     
             const OrderItemsUpdate =  await tb_order_items.update(
                 req.body,
@@ -217,8 +213,6 @@ class OrderItemsController {
 
             const {params} = req
 
-            // cek Have Token ?
-            await CheckToken.HeaderCheck(req, res)
     
             const OrderItemsDelete = await tb_order_items.destroy({
                 where: {

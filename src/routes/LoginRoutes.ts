@@ -14,7 +14,6 @@ import LoginController from "../controllers/LoginController";
     }
 
     public routes(): void {
-        // this.router.get("/login", LoginController.index)
         this.router.post("/login", LoginController.signin)
         this.router.post("/signup", LoginController.signup)
 

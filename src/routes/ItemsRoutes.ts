@@ -3,7 +3,7 @@ import { Router, Request, Response, } from "express";
 import RouterI from "./RouterInterface";
 //Controllers
 import ItemsController from "../controllers/ItemsController";
-
+const checkTokens= require('../middlewares/checkTokenMiddleware')
  class ItemsRoutes implements RouterI {
     public router: Router;
 
@@ -13,11 +13,25 @@ import ItemsController from "../controllers/ItemsController";
     }
 
     public routes(): void {
-        this.router.get("/items", ItemsController.getItems)
-        this.router.get("/items/:id", ItemsController.getItemsById)
-        this.router.post("/items", ItemsController.postItems)
-        this.router.put("/items", ItemsController.updateItem)
-        this.router.delete("/items/:id", ItemsController.deleteItem)
+        this.router.get("/items",
+        checkTokens.HeaderCheck, 
+        ItemsController.getItems)
+        
+        this.router.get("/items/:id",
+        checkTokens.HeaderCheck,
+         ItemsController.getItemsById)
+        
+        this.router.post("/items", 
+        checkTokens.HeaderCheck, 
+        ItemsController.postItems)
+        
+        this.router.put("/items", 
+        checkTokens.HeaderCheck,
+        ItemsController.updateItem)
+        
+        this.router.delete("/items/:id",
+        checkTokens.HeaderCheck, 
+        ItemsController.deleteItem)
 
     }
  }

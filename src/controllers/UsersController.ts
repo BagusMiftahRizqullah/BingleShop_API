@@ -9,8 +9,8 @@ class UsersController {
    
     getUser= async (req: Request, res: Response): Promise <Response> => {
         try {
-             // cek Have Token ?
-        await CheckToken.HeaderCheck(req, res)
+        //      // cek Have Token ?
+        // await CheckToken.HeaderCheck(req, res)
 
         const user = await users.findAll();
 
@@ -52,8 +52,8 @@ class UsersController {
     getUserById= async (req: Request, res: Response): Promise <Response> => {
         try {
             const {params} = req
-            // cek Have Token ?
-            await CheckToken.HeaderCheck(req, res)
+            // // cek Have Token ?
+            // await CheckToken.HeaderCheck(req, res)
     
             const user = await users.findOne({
                 where: { id: params?.id}
@@ -121,8 +121,8 @@ class UsersController {
 
             const {id} = req.body
 
-            // cek Have Token ?
-            await CheckToken.HeaderCheck(req, res)
+            // // cek Have Token ?
+            // await CheckToken.HeaderCheck(req, res)
     
             const userUpdate =  await users.update(
                 req.body,
@@ -159,8 +159,8 @@ class UsersController {
 
             const {params} = req
 
-            // cek Have Token ?
-            await CheckToken.HeaderCheck(req, res)
+            // // cek Have Token ?
+            // await CheckToken.HeaderCheck(req, res)
     
             const userDelete = await users.destroy({
                 where: {

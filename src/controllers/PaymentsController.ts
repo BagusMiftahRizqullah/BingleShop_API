@@ -8,8 +8,7 @@ class PaymentController {
    
     getPayment= async (req: Request, res: Response): Promise <Response> => {
         try {
-             // cek Have Token ?
-        await CheckToken.HeaderCheck(req, res)
+       
 
         const Payments = await tb_payments.findAll();
 
@@ -62,8 +61,7 @@ class PaymentController {
     getPaymentById= async (req: Request, res: Response): Promise <Response> => {
         try {
             const {params} = req
-            // cek Have Token ?
-            await CheckToken.HeaderCheck(req, res)
+        
     
             const Payment = await tb_payments.findOne({
                 where: { id: params?.id}
@@ -134,9 +132,7 @@ class PaymentController {
                 amount
             } = req.body
 
-                // cek Have Token ?
-            await CheckToken.HeaderCheck(req, res)
-
+         
           
 
             const dataOrder = await orders.findOne({
@@ -217,8 +213,7 @@ class PaymentController {
 
             const {id} = req.body
 
-            // cek Have Token ?
-            await CheckToken.HeaderCheck(req, res)
+        
     
             const PaymentUpdate =  await tb_payments.update(
                 req.body,
@@ -255,8 +250,7 @@ class PaymentController {
 
             const {params} = req
 
-            // cek Have Token ?
-            await CheckToken.HeaderCheck(req, res)
+          
     
             const PaymentDelete = await tb_payments.destroy({
                 where: {

@@ -7,8 +7,7 @@ class PromosController {
    
     getPromo= async (req: Request, res: Response): Promise <Response> => {
         try {
-             // cek Have Token ?
-        await CheckToken.HeaderCheck(req, res)
+      
 
         const Promos = await tb_promos.findAll();
 
@@ -61,8 +60,7 @@ class PromosController {
     getPromoById= async (req: Request, res: Response): Promise <Response> => {
         try {
             const {params} = req
-            // cek Have Token ?
-            await CheckToken.HeaderCheck(req, res)
+       
     
             const Promo = await tb_promos.findOne({
                 where: { id: params?.id}
@@ -133,8 +131,7 @@ class PromosController {
                 promo_amount,
             } = req.body
 
-                // cek Have Token ?
-            await CheckToken.HeaderCheck(req, res)
+       
 
             const createPromo = await  tb_promos.create({
                 promo_name,
@@ -174,8 +171,7 @@ class PromosController {
 
             const {id} = req.body
 
-            // cek Have Token ?
-            await CheckToken.HeaderCheck(req, res)
+          
     
             const PromoUpdate =  await tb_promos.update(
                 req.body,
@@ -212,8 +208,6 @@ class PromosController {
 
             const {params} = req
 
-            // cek Have Token ?
-            await CheckToken.HeaderCheck(req, res)
     
             const PromoDelete = await tb_promos.destroy({
                 where: {
