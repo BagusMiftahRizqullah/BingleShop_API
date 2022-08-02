@@ -3,7 +3,13 @@ import { Router, Request, Response, } from "express";
 import RouterI from "./RouterInterface";
 //Controllers
 import PromosController from "../controllers/PromosController";
+
 const checkTokens= require('../middlewares/checkTokenMiddleware')
+const validation = require('../middlewares/validationMiddleware')
+const PrmomoSchema = require('../validations/promoSchema')
+
+
+
  class PromoRoutes implements RouterI {
     public router: Router;
 
@@ -22,7 +28,7 @@ const checkTokens= require('../middlewares/checkTokenMiddleware')
         PromosController.getPromoById)
         
         this.router.post("/promo",
-        checkTokens.HeaderCheck,
+        validation(PrmomoSchema),
         PromosController.postPromo)
         
         this.router.put("/promo",

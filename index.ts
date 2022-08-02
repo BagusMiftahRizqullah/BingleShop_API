@@ -1,4 +1,4 @@
-import express, { Application, Request, Response, NextFunction } from "express";
+import express, {ErrorRequestHandler, Application, Request, Response, NextFunction } from "express";
 require('dotenv')
 
 //Routes
@@ -40,6 +40,14 @@ class App {
             return res.status(404).json({
                 status_code:404,
                 message: 'endpoint not found'
+            })
+        })
+
+         //Validation Error
+        this.app.use((err: ErrorRequestHandler ,req: Request, res: Response, next:NextFunction) => {
+            return res.status(err.code || 500).json({
+                status_code:err.code,
+                message: err?.message || 'Internal server error'
             })
         })
         

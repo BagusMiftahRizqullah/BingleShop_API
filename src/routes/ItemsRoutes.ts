@@ -4,6 +4,11 @@ import RouterI from "./RouterInterface";
 //Controllers
 import ItemsController from "../controllers/ItemsController";
 const checkTokens= require('../middlewares/checkTokenMiddleware')
+
+const validation = require('../middlewares/validationMiddleware')
+const ItemsSchema = require('../validations/itemsSchema')
+
+
  class ItemsRoutes implements RouterI {
     public router: Router;
 
@@ -22,7 +27,8 @@ const checkTokens= require('../middlewares/checkTokenMiddleware')
          ItemsController.getItemsById)
         
         this.router.post("/items", 
-        checkTokens.HeaderCheck, 
+        checkTokens.HeaderCheck,
+        validation(ItemsSchema), 
         ItemsController.postItems)
         
         this.router.put("/items", 

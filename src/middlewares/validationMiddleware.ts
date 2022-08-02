@@ -1,18 +1,26 @@
-// import bcrypt from "bcrypt";
-// import jwt from "jsonwebtoken"
-// require('dotenv')
+import { Request, Response, NextFunction} from "express";
 
-// class validation {
-//     public static valid = (password: string): Promise<string> =>{
-//        try {
 
-//        } catch{
+class validation {
 
-//        }
-//     }
+   
+    public  val = (schema: any) => async( req: Request, res: Response, next:NextFunction): Promise<void> =>{
+       try {
+        await schema.validateAsync(req.body)
+        next()
+   
+       } catch (error: any){
+        const message = error.details[0].message
+        next({
+            code: 400,
+            message: message
+        })
+
+       }
+    }
 
    
 
-// }
+}
 
-// export default Auth;
+module.exports= new validation().val

@@ -30,7 +30,7 @@ class CheckToken {
           
         
 
-        } catch(err: Error){
+        } catch(err: any){
            
             return res.status(403).json({
                 status_code:403,

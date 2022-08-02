@@ -3,8 +3,10 @@ import { Router, Request, Response, } from "express";
 import RouterI from "./RouterInterface";
 //Controllers
 import PaymentController from "../controllers/PaymentsController";
-const checkTokens= require('../middlewares/checkTokenMiddleware')
 
+const checkTokens= require('../middlewares/checkTokenMiddleware')
+const validation = require('../middlewares/validationMiddleware')
+const PaymentSchema = require('../validations/paymentSchema')
 
  class PaymentRoutes implements RouterI {
     public router: Router;
@@ -25,6 +27,7 @@ const checkTokens= require('../middlewares/checkTokenMiddleware')
         
         this.router.post("/payment",
         checkTokens.HeaderCheck,
+        validation(PaymentSchema),
         PaymentController.postPayment)
         
         this.router.put("/payment",

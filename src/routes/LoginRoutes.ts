@@ -1,11 +1,15 @@
 require('dotenv');
 import { Router, Request, Response, } from "express";
-import { sequelize } from "../models";
-import RouterI from "./RouterInterface";
+
 //Controllers
 import LoginController from "../controllers/LoginController";
 
- class LoginRoutes implements RouterI {
+
+const validation = require('../middlewares/validationMiddleware')
+const RegisterSchema = require('../validations/registerSchema')
+const LoginSchema = require('../validations/loginSchema')
+
+ class LoginRoutes  {
     public router: Router;
 
     constructor(){
@@ -14,8 +18,14 @@ import LoginController from "../controllers/LoginController";
     }
 
     public routes(): void {
-        this.router.post("/login", LoginController.signin)
-        this.router.post("/signup", LoginController.signup)
+        
+        this.router.post("/login",
+        validation(LoginSchema),
+        LoginController.signin)
+
+        this.router.post("/signup", 
+        validation(RegisterSchema), 
+        LoginController.signup)
 
     }
  }
